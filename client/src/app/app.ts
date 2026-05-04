@@ -1,28 +1,14 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, signal,inject, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { lastValueFrom } from 'rxjs';
+import { Component, inject } from '@angular/core';
+import { Nav } from "../layout/nav/nav";
+import { Router, RouterOutlet } from '@angular/router';
+import { ConfirmDialog } from "../shared/confirm-dialog/confirm-dialog";
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  imports: [Nav, RouterOutlet, ConfirmDialog],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App implements OnInit{
-  private http=inject(HttpClient);
-  protected readonly title = signal('client');
-  protected members = signal<any>([])
-
-  async ngOnInit(){
-    this.members.set(await this.getMembers());
-  }
-
-  async getMembers(){
-    try{
-      return lastValueFrom(this.http.get('https://localhost:5001/api/members'));
-    }catch(error){
-
-    }
-  }
+export class App {
+  protected router = inject(Router);
 }
